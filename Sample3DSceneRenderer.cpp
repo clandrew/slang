@@ -3,28 +3,13 @@
 
 #include "DirectXHelper.h"
 
+#include "SampleVertexShader.h"
+#include "SamplePixelShader.h"
+
 using namespace SpinningCube;
 
 using namespace DirectX;
 using namespace Microsoft::WRL;
-
-std::vector<byte> LoadBinaryFile(std::wstring path)
-{
-	FILE* pFile{};
-	_wfopen_s(&pFile, path.c_str(), L"rb");
-
-	fseek(pFile, 0, SEEK_END);
-	long fileSize = ftell(pFile);
-	fseek(pFile, 0, SEEK_SET);
-
-	std::vector<byte> bytes;
-	bytes.resize(fileSize);
-
-	fread(bytes.data(), 1, fileSize, pFile);
-	fclose(pFile);
-
-	return bytes;	
-}
 
 // Loads vertex and pixel shaders from files and instantiates the cube geometry.
 Sample3DSceneRenderer::Sample3DSceneRenderer(const std::shared_ptr<DX::DeviceResources>& deviceResources) :
@@ -85,15 +70,11 @@ void Sample3DSceneRenderer::CreateDeviceDependentResources()
 			{ "COLOR", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 12, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0 },
 		};
 
-		std::vector<byte> sampleVertexShader = LoadBinaryFile(L"SampleVertexShader.dxil");
-
-		std::vector<byte> samplePixelShader = LoadBinaryFile(L"SamplePixelShader.dxil");
-
 		D3D12_GRAPHICS_PIPELINE_STATE_DESC state = {};
 		state.InputLayout = { inputLayout, _countof(inputLayout) };
 		state.pRootSignature = m_rootSignature.Get();
-        state.VS = CD3DX12_SHADER_BYTECODE(sampleVertexShader.data(), sampleVertexShader.size());
-        state.PS = CD3DX12_SHADER_BYTECODE(samplePixelShader.data(), samplePixelShader.size());
+        state.VS = CD3DX12_SHADER_BYTECODE((void*)(g_SampleVertexShader), _countof(g_SampleVertexShader));
+        state.PS = CD3DX12_SHADER_BYTECODE((void*)(g_SamplePixelShader), _countof(g_SamplePixelShader));
 		state.RasterizerState = CD3DX12_RASTERIZER_DESC(D3D12_DEFAULT);
 		state.BlendState = CD3DX12_BLEND_DESC(D3D12_DEFAULT);
 		state.DepthStencilState = CD3DX12_DEPTH_STENCIL_DESC(D3D12_DEFAULT);

@@ -92,12 +92,10 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="SamplePixelShader.slang">
-      <Filter>Shaders</Filter>
-    </Text>
-  </ItemGroup>
-  <ItemGroup>
     <CustomBuild Include="SampleVertexShader.slang">
+      <Filter>Shaders</Filter>
+    </CustomBuild>
+    <CustomBuild Include="SamplePixelShader.slang">
       <Filter>Shaders</Filter>
     </CustomBuild>
   </ItemGroup>

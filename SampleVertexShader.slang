@@ -1,5 +1,4 @@
 
-/*
 // A constant buffer that stores the three basic column-major matrices for composing geometry.
 cbuffer ModelViewProjectionConstantBuffer : register(b0)
 {
@@ -23,6 +22,7 @@ struct PixelShaderInput
 };
 
 // Simple shader to do vertex processing on the GPU.
+[shader("vertex")]
 PixelShaderInput main(VertexShaderInput input)
 {
 	PixelShaderInput output;
@@ -39,4 +39,3 @@ PixelShaderInput main(VertexShaderInput input)
 
 	return output;
 }
-*/
